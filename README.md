@@ -25,3 +25,10 @@ npm run serve
 npm run build
 ```
 
+## Build android application
+
+1. Install and configure Android studio
+2. Build frontend `npm run build`
+3. Sync front with Android Studio `npx cap sync`
+4. Open `android` folder in Android Studio
+5. Run build =)
