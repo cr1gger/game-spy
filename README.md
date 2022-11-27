@@ -1,8 +1,18 @@
-# game_spy
+# Game spy
 
-## Project setup
+## Backend setup
 ```
-npm install
+Edit config/db.php
+
+composer isntall
+php yii migrate
+php yii user/create - Create admin user
+```
+
+## Frontend setup
+```
+Set base API url src/use/Enum.js 
+npm i
 ```
 
 ### Compiles and hot-reloads for development
@@ -15,5 +25,3 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
