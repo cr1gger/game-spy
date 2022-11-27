@@ -1,0 +1,6 @@
+{
+  "appId": "ru.spy.vladislav.in",
+  "appName": "Spy",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
