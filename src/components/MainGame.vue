@@ -5,7 +5,7 @@
         <div class="game">
           <GameCard :player="players[0]" @closed="closeCard()" v-if="showCards"/>
           <keep-alive>
-            <GameMenu @start="startGame" v-if="showMenu" />
+            <GameMenu @start="startGame" v-if="showMenu" @timeout="endGame()" />
           </keep-alive>
           <GameTimer :timer="time" @timeout="endGame()" v-if="showTimer"/>
         </div>

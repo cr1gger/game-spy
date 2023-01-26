@@ -20,23 +20,13 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>Настройки</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn
-              v-sound-click
-              variant="plain"
-              @click="show = false"
-          >
-            Сохранить
-          </v-btn>
-        </v-toolbar-items>
       </v-toolbar>
       <v-list>
         <v-list-subheader>Игра</v-list-subheader>
         <v-list-item>
           <template v-slot:prepend>
             <v-checkbox
-                @click="playSound(keepWords)"
+                v-sound-click
                 v-model="keepWords"
                 label="Запоминать слова"
                 messages="Запоминать слова которые уже попадались и не показывать их."
@@ -60,13 +50,13 @@
             <v-checkbox
                 v-model="sound"
                 label="Звуки" messages="Звуки кликов, начало игры, завершение таймера и т.д"
-                @click="playSound(sound)"
+                v-sound-click
             />
           </template>
         </v-list-item>
         <v-list-item>
           <template v-slot:prepend>
-            <v-checkbox v-model="vibration" label="Вибрация" @click="playSound(vibration)"/>
+            <v-checkbox v-model="vibration" label="Вибрация" v-sound-click/>
           </template>
 
         </v-list-item>

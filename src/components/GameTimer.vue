@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted, ref, onDeactivated } from "vue"
 import { playDzin, playEndTimer } from "@/use/Helper";
 
 const emit = defineEmits([
@@ -56,8 +56,11 @@ onMounted(() => {
   }, 1000)
 })
 
-const restart = () => {
+onDeactivated(() => {
   clearInterval(intervalInstance)
+})
+
+const restart = () => {
   emit('timeout')
 }
 

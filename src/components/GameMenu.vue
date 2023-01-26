@@ -8,6 +8,7 @@
           color="red"
           icon="mdi-minus"
           size="x-small"
+          :disabled="disablePlayerMinus"
       ></v-btn>
       {{ playerCount }}
       <v-btn
@@ -17,6 +18,7 @@
           color="red"
           size="x-small"
           icon="mdi-plus"
+          :disabled="disablePlayerPlus"
       ></v-btn>
     </div>
     <div class="input-group" data-title="Шпионы">
@@ -27,6 +29,7 @@
           color="red"
           icon="mdi-minus"
           size="x-small"
+          :disabled="disableSpyMinus"
       ></v-btn>
       {{ spyCount }}
       <v-btn
@@ -36,6 +39,7 @@
           color="red"
           size="x-small"
           icon="mdi-plus"
+          :disabled="disableSpyPlus"
       ></v-btn>
     </div>
 
@@ -47,6 +51,7 @@
           color="red"
           icon="mdi-minus"
           size="x-small"
+          :disabled="disableTimerMinus"
       ></v-btn>
       {{ timer }}
       <v-btn
@@ -56,6 +61,7 @@
           color="red"
           size="x-small"
           icon="mdi-plus"
+          :disabled="disableTimerPlus"
       ></v-btn>
     </div>
 
@@ -89,35 +95,65 @@
       Старт
     </v-btn>
     <br>
-    <v-btn
-        v-sound-click
-        @click="showSettings = true"
-        color="red"
-        block
-        variant="flat"
-    >
-      Настройки
-    </v-btn>
+    <v-bottom-navigation grow color="red" border="red">
+      <v-btn
+          v-sound-click
+          @click="showSettings = true"
+      >
+        <v-icon>mdi-cog</v-icon>
+        Настройки
+      </v-btn>
+
+      <v-btn
+          v-sound-click
+          @click="showRules = true"
+      >
+        <v-icon>mdi-information-outline</v-icon>
+        Правила
+      </v-btn>
+
+      <v-btn
+      @click="App.exitApp()"
+      v-if="Capacitor.getPlatform() !== 'web'"
+      >
+        <v-icon>mdi-exit-to-app</v-icon>
+        Выход
+      </v-btn>
+    </v-bottom-navigation>
+
     <GameSetting v-model="showSettings"/>
+    <GameRulesModal v-model="showRules"/>
   </div>
 </template>
 
 <script setup>
-import {ref, defineEmits, onMounted} from "vue"
+import {ref, computed ,onMounted, onActivated, onDeactivated} from "vue"
 import localDb from "@/use/local-db";
 import Helper from "@/use/Helper";
 import GameSetting from "@/components/GameSetting"
-import {useWebNotification} from "@vueuse/core/index";
+import GameRulesModal from "@/components/GameRulesModal";
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { Haptics, ImpactStyle } from '@capacitor/haptics'; // TODO: add vibration
 
+const MAX_PLAYER = 10;
+const MIN_PLAYER = 3;
+
+const MAX_SPY = 25;
+const MIN_SPY = 1;
+
+const MAX_TIMER = 30;
+const MIN_TIMER = 1;
 
 const showSettings = ref(false)
+const showRules = ref(false)
 const playerCount = ref(3)
 const spyCount = ref(1)
 const timer = ref(1)
 const categoryError = ref("")
 const selectedCategory = ref([])
 const category = ref([])
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+const gameStarted = ref(false)
 
 
 const emit = defineEmits([
@@ -126,14 +162,15 @@ const emit = defineEmits([
 
 const playerCountUpdate = (up = true) => {
   if (up) {
-    if (playerCount.value >= 50) return;
+    if (playerCount.value >= MAX_PLAYER) return;
     playerCount.value++
   } else {
-    if (playerCount.value <= 3) return;
+    if (playerCount.value <= MIN_PLAYER) return;
     playerCount.value--
   }
 }
 // setInterval(function() {
+// TODO: add vibration
 //   Haptics.vibrate({
 //     options: {
 //       duration: 3000
@@ -143,23 +180,47 @@ const playerCountUpdate = (up = true) => {
 
 const spyCountUpdate = (up = true) => {
   if (up) {
-    if (spyCount.value >= 25) return;
+    if (spyCount.value >= MAX_SPY) return;
     spyCount.value++
   } else {
-    if (spyCount.value <= 1) return;
+    if (spyCount.value <= MIN_SPY) return;
     spyCount.value--
   }
 }
 
 const timerCountUpdate = (up = true) => {
   if (up) {
-    if (timer.value >= 30) return;
+    if (timer.value >= MAX_TIMER) return;
     timer.value++
   } else {
-    if (timer.value <= 1) return;
+    if (timer.value <= MIN_TIMER) return;
     timer.value--
   }
 }
+
+const disablePlayerPlus = computed(() => {
+  return playerCount.value >= MAX_PLAYER;
+})
+
+const disablePlayerMinus = computed(() => {
+  return playerCount.value <= MIN_PLAYER;
+})
+
+const disableSpyPlus = computed(() => {
+  return spyCount.value >= MAX_SPY;
+})
+
+const disableSpyMinus = computed(() => {
+  return spyCount.value <= MIN_SPY;
+})
+
+const disableTimerPlus = computed(() => {
+  return timer.value >= MAX_TIMER;
+})
+
+const disableTimerMinus = computed(() => {
+  return timer.value <= MIN_TIMER;
+})
 
 const start = async () => {
   if (selectedCategory.value.length <= 0) {
@@ -173,19 +234,45 @@ const start = async () => {
     return
   }
 
-
-
   emit('start',
     playerCount.value,
     spyCount.value,
     timer.value,
     word
   )
+  gameStarted.value = true;
 }
 
 onMounted(async () => {
   category.value = await localDb.getCategories()
+
+  await App.removeAllListeners();
+  App.addListener('backButton', (event) => {
+    if (showRules.value) {
+      showRules.value = false;
+    }
+
+    if (showSettings.value) {
+      showSettings.value = false
+    }
+
+    if (gameStarted.value) {
+      emit('timeout')
+    }
+  })
 })
+
+onActivated(() => {
+  gameStarted.value = false;
+  // console.log('onActivated', gameStarted.value)
+})
+
+onDeactivated(() => {
+  gameStarted.value = true;
+  // console.log('onDeactivated', gameStarted.value)
+
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -247,4 +334,5 @@ onMounted(async () => {
 
   }
 }
+
 </style>
