@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Words;
+use Yii;
 use yii\rest\Controller;
 
 class ApiController extends Controller
@@ -28,7 +29,8 @@ class ApiController extends Controller
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::class,
             'cors' => [
-                'Origin' => ['*'],
+                'Origin' => [Yii::$app->request->getOrigin()],
+                'Access-Control-Allow-Credentials' => true,
                 // Allow  methods
                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'GET', 'DELETE'],
                 // Allow only headers 'X-Wsse'
