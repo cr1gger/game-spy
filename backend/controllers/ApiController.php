@@ -26,6 +26,7 @@ class ApiController extends Controller
                     'Origin' => ['*'],
                     'Access-Control-Allow-Origin' => ['*'],
                     'Access-Control-Request-Method' => ['POST', 'GET'],
+                    'Access-Control-Request-Headers' => ['*'],
                 ],
 
             ],
