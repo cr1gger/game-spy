@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\MultiCategoryForm;
 use yii\data\ActiveDataProvider;
 use app\controllers\base\BaseAdminController;
 use yii\web\NotFoundHttpException;
@@ -77,14 +78,13 @@ class CategoryController extends BaseAdminController
      */
     public function actionCreate()
     {
-        $model = new Category();
+        $model = new MultiCategoryForm();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->save();
+                return $this->redirect(['index']);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [

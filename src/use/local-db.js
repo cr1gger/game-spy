@@ -38,7 +38,7 @@ const getWords = async () => {
             result[word.category_id].push(word.name)
         })
 
-        // Сохраняем на случай отсутствия интернетас
+        // Сохраняем на случай отсутствия интернета
         await Preferences.set({
             key: 'words',
             value: JSON.stringify(result)

@@ -98,18 +98,18 @@
     <v-bottom-navigation grow color="red" border="red">
       <v-btn
           v-sound-click
-          @click="showSettings = true"
-      >
-        <v-icon>mdi-cog</v-icon>
-        Настройки
-      </v-btn>
-
-      <v-btn
-          v-sound-click
           @click="showRules = true"
       >
         <v-icon>mdi-information-outline</v-icon>
         Правила
+      </v-btn>
+
+      <v-btn
+          v-sound-click
+          @click="showSettings = true"
+      >
+        <v-icon>mdi-cog</v-icon>
+        Настройки
       </v-btn>
 
       <v-btn

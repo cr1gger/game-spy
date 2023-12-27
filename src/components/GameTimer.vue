@@ -56,11 +56,12 @@ onMounted(() => {
   }, 1000)
 })
 
-onDeactivated(() => {
-  clearInterval(intervalInstance)
-})
+// onDeactivated(() => {
+//   clearInterval(intervalInstance)
+// })
 
 const restart = () => {
+  clearInterval(intervalInstance)
   emit('timeout')
 }
 
