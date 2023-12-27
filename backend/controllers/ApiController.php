@@ -16,6 +16,7 @@ class ApiController extends Controller
                 'class' => Cors::class,
                 'cors' => [
                     'Origin' => ['*'],
+                    'Access-Control-Allow-Origin' => ['*'],
                     'Access-Control-Request-Method' => ['POST', 'GET'],
                 ],
 
