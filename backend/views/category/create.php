@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin(); ?>
 
-            <?= $form->field($model, 'category')->textarea(['rows' => 6, 'cols' => '50']) ?>
+            <?= $form->field($model, 'categories')->textarea(['rows' => 6, 'cols' => '50']) ?>
 
             <div class="form-group">
                 <br>
