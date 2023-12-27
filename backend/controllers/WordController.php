@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\MultiWordsForm;
 use app\models\Words;
 use yii\data\ActiveDataProvider;
 use app\controllers\base\BaseAdminController;
@@ -77,14 +78,13 @@ class WordController extends BaseAdminController
      */
     public function actionCreate()
     {
-        $model = new Words();
+        $model = new MultiWordsForm();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->save();
+                return $this->redirect(['index']);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
