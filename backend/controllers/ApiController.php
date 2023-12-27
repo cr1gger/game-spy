@@ -9,6 +9,14 @@ use yii\rest\Controller;
 
 class ApiController extends Controller
 {
+    public function actions()
+    {
+        return [
+            'options' => [
+                'class' => 'yii\rest\OptionsAction',
+            ],
+        ];
+    }
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
