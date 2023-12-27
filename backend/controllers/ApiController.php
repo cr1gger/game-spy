@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Words;
-use yii\filters\Cors;
 use yii\rest\Controller;
 
 class ApiController extends Controller
@@ -30,9 +29,18 @@ class ApiController extends Controller
             'class' => \yii\filters\Cors::class,
             'cors' => [
                 'Origin' => ['*'],
-                'Access-Control-Allow-Origin' => ['*'],
-                'Access-Control-Request-Method' => ['POST', 'GET'],
+                // Allow  methods
+                'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS', 'GET', 'DELETE'],
+                // Allow only headers 'X-Wsse'
                 'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Headers' => ['Content-Type'],
+                // Allow credentials (cookies, authorization headers, etc.) to be exposed to the browser
+//                'Access-Control-Allow-Credentials' => true,
+                // Allow OPTIONS caching
+
+                'Access-Control-Max-Age' => 3600,
+                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
+                'Access-Control-Expose-Headers' => ['*']
             ],
         ];
 
@@ -43,18 +51,18 @@ class ApiController extends Controller
 
         return $behaviors;
 
-        return array_merge(parent::behaviors(), [
-            'corsFilter' => [
-                'class' => Cors::class,
-                'cors' => [
-                    'Origin' => ['*'],
-                    'Access-Control-Allow-Origin' => ['*'],
-                    'Access-Control-Request-Method' => ['POST', 'GET'],
-                    'Access-Control-Request-Headers' => ['*'],
-                ],
-
-            ],
-        ]);
+//        return array_merge(parent::behaviors(), [
+//            'corsFilter' => [
+//                'class' => Cors::class,
+//                'cors' => [
+//                    'Origin' => ['*'],
+//                    'Access-Control-Allow-Origin' => ['*'],
+//                    'Access-Control-Request-Method' => ['POST', 'GET'],
+//                    'Access-Control-Request-Headers' => ['*'],
+//                ],
+//
+//            ],
+//        ]);
     }
     public function actionIndex()
     {

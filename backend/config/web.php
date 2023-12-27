@@ -11,7 +11,7 @@ $config = [
     'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
@@ -45,11 +45,10 @@ $config = [
         ],
         'db' => $db,
 
-            'urlManager' => [
+        'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
 
     ],
