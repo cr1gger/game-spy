@@ -14,12 +14,19 @@
 <script setup>
 import spyImage from "@/assets/spy.png"
 import { Preferences } from '@capacitor/preferences';
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import localDB from "@/use/local-db"
 import AppSpinner from "@/components/AppSpinner"
 
 const loading = ref(true);
-
+onBeforeMount(() => {
+  YaGames
+      .init()
+      .then(ysdk => {
+        console.log('Yandex SDK initialized');
+        window.ysdk = ysdk;
+      });
+})
 onMounted(async () => {
   let settingJson = await Preferences.get({
     key: 'setting'
@@ -40,6 +47,7 @@ onMounted(async () => {
     })
     loading.value = false
   }
+  ysdk.features.LoadingAPI?.ready();
 })
 </script>
 
