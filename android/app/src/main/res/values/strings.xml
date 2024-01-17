@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Шпион - Настольная карточная игра</string>
-    <string name="title_activity_main">Шпион - Настольная карточная игра</string>
+    <string name="app_name">Шпион: Перезагрузка</string>
+    <string name="title_activity_main">Шпион: Перезагрузка</string>
     <string name="package_name">ru.spy.vladislav.in</string>
     <string name="custom_url_scheme">ru.spy.vladislav.in</string>
 </resources>

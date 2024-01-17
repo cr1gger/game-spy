@@ -36,8 +36,8 @@ const startGame = (playerCount, spyCount, min ,word) => {
   players.value = Helper.getPlayers(playerCount, spyCount, word)
   showCards.value = true
   showMenu.value = false
-  time.min = 0
-  time.sec = 10
+  time.min = min
+  time.sec = 0
 }
 
 const endGame = () => {

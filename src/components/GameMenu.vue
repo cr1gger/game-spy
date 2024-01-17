@@ -180,7 +180,9 @@ const playerCountUpdate = (up = true) => {
 
 const spyCountUpdate = (up = true) => {
   if (up) {
+    let tmpSpyCount = spyCount.value + 1
     if (spyCount.value >= MAX_SPY) return;
+    if (spyCount.value === playerCount.value || (tmpSpyCount) === playerCount.value) return;
     spyCount.value++
   } else {
     if (spyCount.value <= MIN_SPY) return;
